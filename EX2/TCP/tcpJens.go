@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"net"
 	"time"
@@ -38,22 +37,10 @@ func fetchIP() net.IP {
 	}
 }
 
-// func sendMessage(conn net.Conn, msg string) {
-// _, err = conn.Write([]byte(msg))
-// if err != nil {
-// 	fmt.Println("Write error: ", err)
-// 	return
-// }
-// }
-
 func main() {
 
-	// addrTCP := net.TCPAddr{
-	// 	IP:   fetchIP(),
-	// 	Port: 34933, // Forces fixed-size data of 1024
-	// }
 	serverIP := fetchIP().String()
-	serverPort := "34933"
+	serverPort := "34933" // Forces fixed-size data of 1024
 
 	conn, err := net.Dial("tcp", serverIP+":"+serverPort)
 	if err != nil {
@@ -63,15 +50,6 @@ func main() {
 	defer conn.Close()
 
 	fmt.Println(("Connected to server"))
-
-	reader := bufio.NewReader(conn)
-
-	welcome, err := reader.ReadString('\x00')
-	if err != nil {
-		fmt.Println("Read error: ", err)
-		return
-	}
-	fmt.Println("Server: ", welcome)
 
 	for {
 		// Prepares the 1024 byte data to be sent
